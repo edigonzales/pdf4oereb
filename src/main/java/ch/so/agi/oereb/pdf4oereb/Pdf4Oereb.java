@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.xml2pdf;
+package ch.so.agi.oereb.pdf4oereb;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -29,11 +29,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-import ch.so.agi.oereb.xml2pdf.saxon.ext.FixImage;
-import ch.so.agi.oereb.xml2pdf.saxon.ext.OverlayImage;
-import ch.so.agi.oereb.xml2pdf.saxon.ext.PlanForLandRegisterMainPageImage;
-import ch.so.agi.oereb.xml2pdf.saxon.ext.RestrictionOnLandownershipImage;
-import ch.so.agi.oereb.xml2pdf.saxon.ext.URLDecoder;
+import ch.so.agi.oereb.pdf4oereb.saxon.ext.FixImage;
+import ch.so.agi.oereb.pdf4oereb.saxon.ext.OverlayImage;
+import ch.so.agi.oereb.pdf4oereb.saxon.ext.PlanForLandRegisterMainPageImage;
+import ch.so.agi.oereb.pdf4oereb.saxon.ext.RestrictionOnLandownershipImage;
+import ch.so.agi.oereb.pdf4oereb.saxon.ext.URLDecoder2;
 import net.sf.saxon.s9api.ExtensionFunction;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.SaxonApiException;
@@ -43,8 +43,8 @@ import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 
-public class Xml2Pdf {
-    Logger log = LoggerFactory.getLogger(Xml2Pdf.class);
+public class Pdf4Oereb {
+    Logger log = LoggerFactory.getLogger(Pdf4Oereb.class);
     
     private final String xlstFileName = "oereb_extract.xslt";
     private final String fopxconfFileName = "fop.xconf";
@@ -58,31 +58,32 @@ public class Xml2Pdf {
         fonts.add("CadastraIt.ttf");
     }
     
-    public void run(String xmlFileName, String outputDirectory) {
+    public File run(String xmlFileName, String outputDirectory) throws SaxonApiException {
         try {
-//            Path tempDir = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), "oereb_extract_resources__");
-            Path tempDir = Paths.get("/Users/stefan/tmp/");
+//            Path tempDir = Files.createTempDirectory(Paths.get(System.getProperty("java.io.tmpdir")), "oereb_extract_resources_");
+//            Path tempDir = Paths.get("/Users/stefan/Downloads/");
+        	Path outputPath = Paths.get(outputDirectory);
             
             String baseFileName = FilenameUtils.getBaseName(xmlFileName);
-            File foFile = new File(Paths.get(tempDir.toFile().getAbsolutePath(), baseFileName + ".fo").toFile().getAbsolutePath());
-            File pdfFile = new File(Paths.get(tempDir.toFile().getAbsolutePath(), baseFileName + ".pdf").toFile().getAbsolutePath());
+            File foFile = new File(Paths.get(outputPath.toFile().getAbsolutePath(), baseFileName + ".fo").toFile().getAbsolutePath());
+            File pdfFile = new File(Paths.get(outputPath.toFile().getAbsolutePath(), baseFileName + ".pdf").toFile().getAbsolutePath());
 
             // copy xslt file from resources into temporary directory
-            File xsltFile = new File(Paths.get(tempDir.toFile().getAbsolutePath(), xlstFileName).toFile().getAbsolutePath());
-            InputStream xsltFileInputStream = Xml2Pdf.class.getResourceAsStream("/"+xlstFileName); 
+            File xsltFile = new File(Paths.get(outputPath.toFile().getAbsolutePath(), xlstFileName).toFile().getAbsolutePath());
+            InputStream xsltFileInputStream = Pdf4Oereb.class.getResourceAsStream("/"+xlstFileName); 
             Files.copy(xsltFileInputStream, xsltFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             xsltFileInputStream.close();
             
             // copy fop.xconf file from resources into temporary directory
-            File fopxconfFile = new File(Paths.get(tempDir.toFile().getAbsolutePath(), fopxconfFileName).toFile().getAbsolutePath());
-            InputStream fopxconfFileInputStream = Xml2Pdf.class.getResourceAsStream("/"+fopxconfFileName); 
+            File fopxconfFile = new File(Paths.get(outputPath.toFile().getAbsolutePath(), fopxconfFileName).toFile().getAbsolutePath());
+            InputStream fopxconfFileInputStream = Pdf4Oereb.class.getResourceAsStream("/"+fopxconfFileName); 
             Files.copy(fopxconfFileInputStream, fopxconfFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             fopxconfFileInputStream.close();
             
             // copy fonts from resources into temporary directory
             for (String fontName : fonts) {
-                File fontFile = new File(Paths.get(tempDir.toFile().getAbsolutePath(), fontName).toFile().getAbsolutePath());
-                InputStream is =  Xml2Pdf.class.getResourceAsStream("/"+fontName); 
+                File fontFile = new File(Paths.get(outputPath.toFile().getAbsolutePath(), fontName).toFile().getAbsolutePath());
+                InputStream is =  Pdf4Oereb.class.getResourceAsStream("/"+fontName); 
                 Files.copy(is, fontFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 is.close();
             }
@@ -99,7 +100,7 @@ public class Xml2Pdf {
             proc.registerExtensionFunction(rolImage);
             ExtensionFunction fixImage = new FixImage();
             proc.registerExtensionFunction(fixImage);
-            ExtensionFunction decodeUrl = new URLDecoder();
+            ExtensionFunction decodeUrl = new URLDecoder2();
             proc.registerExtensionFunction(decodeUrl);
 
             XsltCompiler comp = proc.newXsltCompiler();
@@ -132,16 +133,19 @@ public class Xml2Pdf {
                 log.info(pdfFile.getAbsolutePath());
                 outPdf.close();
             }
+            return pdfFile;
         } catch (IOException e) {
             log.error(e.getMessage());
             e.printStackTrace();
         } catch (SaxonApiException e) {
             log.error(e.getMessage());
             e.printStackTrace();
+            throw new SaxonApiException(e.getMessage());
         } 
         catch (SAXException e) {
             log.error(e.getMessage());
             e.printStackTrace();
         }
+		return null;
     }
 }

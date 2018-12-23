@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.xml2pdf.saxon.ext;
+package ch.so.agi.oereb.pdf4oereb.saxon.ext;
 
 import java.awt.image.BufferedImage;
 

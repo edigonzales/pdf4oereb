@@ -1,6 +1,5 @@
-package ch.so.agi.oereb.xml2pdf.saxon.ext;
+package ch.so.agi.oereb.pdf4oereb.saxon.ext;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.AlphaComposite;
@@ -10,18 +9,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
@@ -190,7 +182,6 @@ public class RestrictionOnLandownershipImage implements ExtensionFunction {
 			e.printStackTrace();
 			throw new SaxonApiException(e.getMessage());
 		}	
-		
         return new XdmAtomicValue(new net.sf.saxon.value.Base64BinaryValue(newImageByteArray).asAtomic().getStringValue());
 	}
 }

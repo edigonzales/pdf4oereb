@@ -1,20 +1,15 @@
-package ch.so.agi.oereb.xml2pdf.saxon.ext;
+package ch.so.agi.oereb.pdf4oereb.saxon.ext;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -287,7 +282,10 @@ public class OverlayImage implements ExtensionFunction {
      *   <gml:posList>2669946.002 1201975.174 2669957.242 1201968.811 ...</gml:posList>
      * </gml:LinearRing>
      * 
-     * 
+     * <gml:LinearRing>
+     *   <gml:pos>2669946.002 1201975.174</gml:pos> <gml:pos>2669957.242 1201968.811</gml:pos> ...
+     * </gml:LinearRing>
+     *
      */
     private MultiPolygon multiSurface2JTS(XdmNode inputNode) {
 		MultiPolygon multiPolygon = null;

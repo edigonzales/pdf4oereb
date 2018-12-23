@@ -1,6 +1,5 @@
 plugins {
-    id 'java'
-    id 'application'
+    id 'java-library'
 }
 
 repositories {
@@ -25,13 +24,21 @@ dependencies {
     implementation 'org.geotools:gt-render:20.1'
     implementation 'org.geotools:gt-epsg-hsql:20.1'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    testImplementation 'org.junit-pioneer:junit-pioneer:0.3.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 
+test {
+    useJUnitPlatform()
+}
+
+/*
 application {
-    mainClassName = "ch.so.agi.oereb.xml2pdf.Main"
+    mainClassName = "ch.so.agi.oereb.pdf4oereb.Main"
 }
 
 run {
     args = ["src/test/data/CH567107399166_geometry_images.xml", "/Users/stefan/tmp/"]
 }
+*/

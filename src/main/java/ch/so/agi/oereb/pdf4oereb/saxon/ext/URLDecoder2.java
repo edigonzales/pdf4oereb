@@ -1,4 +1,4 @@
-package ch.so.agi.oereb.xml2pdf.saxon.ext;
+package ch.so.agi.oereb.pdf4oereb.saxon.ext;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -17,8 +17,8 @@ import net.sf.saxon.s9api.XdmAtomicValue;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 
-public class URLDecoder implements ExtensionFunction {
-    Logger log = LoggerFactory.getLogger(URLDecoder.class);
+public class URLDecoder2 implements ExtensionFunction {
+    Logger log = LoggerFactory.getLogger(URLDecoder2.class);
 
 	@Override
 	public QName getName() {
