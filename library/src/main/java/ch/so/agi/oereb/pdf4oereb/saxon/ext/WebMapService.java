@@ -3,10 +3,12 @@ package ch.so.agi.oereb.pdf4oereb.saxon.ext;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -26,6 +28,8 @@ public class WebMapService {
 					.setRedirectStrategy(new LaxRedirectStrategy()) // adds HTTP REDIRECT support to GET and POST methods 
 					.build();
 			
+//			System.out.println("******" + decodedRequest);
+			
 			HttpGet get = new HttpGet(new URL(decodedRequest).toURI()); 
 			CloseableHttpResponse response = httpclient.execute(get);
 			InputStream inputStream = response.getEntity().getContent();
@@ -37,7 +41,9 @@ public class WebMapService {
             
             Graphics2D g = (Graphics2D) fixedImage.getGraphics();
             g.drawImage(image, 0, 0, null);
-                                   
+            
+//            ImageIO.write(fixedImage, "png", new File("/Users/stefan/tmp/fixedImage"+new Date().hashCode()+".png"));                 
+            
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(fixedImage, "png", baos); 
             baos.flush();

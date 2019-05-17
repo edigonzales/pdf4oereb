@@ -28,7 +28,7 @@ public class ConverterTest {
     
     @Test
     @ExtendWith(TempDirectory.class)
-    public void convertXml2_CantonBl_Ok(@TempDir Path tempDir) throws ConverterException, IOException {
+    public void convertXml2Pdf_CantonBl_Ok(@TempDir Path tempDir) throws ConverterException, IOException {
     	Converter converter = new Converter();
     	File resultFile = converter.runXml2Pdf("src/test/data/bl/CH567107399166_geometry_images.xml", tempDir.toAbsolutePath().toString(), Locale.DE);
 //    	File resultFile = converter.runXml2Pdf("src/test/data/bl/CH567107399166_geometry_images.xml", "/Users/stefan/tmp/", Locale.DE);
@@ -44,9 +44,20 @@ public class ConverterTest {
     }
     
     @Test
+    @ExtendWith(TempDirectory.class)
+    public void convertXml2Pdf_CantonSz_Ok(@TempDir Path tempDir) throws ConverterException, IOException {
+        System.out.println("fubar");
+        Converter converter = new Converter();
+//        File resultFile = converter.runXml2Fo("src/test/data/sz/CH727715224093_geometry_wms.xml", "/Users/stefan/tmp/", Locale.DE);
+        File resultFile = converter.runXml2Pdf("src/test/data/sz/CH727715224093_geometry_wms.xml", "/Users/stefan/tmp/", Locale.DE);
+
+    }
+    
+    
+    @Test
     @Tag("wms")
     @ExtendWith(TempDirectory.class)
-    public void convertXml1_CantonZh_Ok(@TempDir Path tempDir) throws ConverterException, IOException {
+    public void convertXml2Pdf_CantonZh_Ok(@TempDir Path tempDir) throws ConverterException, IOException {
         Converter converter = new Converter();
         File resultFile = converter.runXml2Pdf("src/test/data/zh/CH282399917939_geometry_wms.xml", tempDir.toAbsolutePath().toString(), Locale.DE);
         byte[] resultFileContent = Files.readAllBytes(resultFile.toPath());

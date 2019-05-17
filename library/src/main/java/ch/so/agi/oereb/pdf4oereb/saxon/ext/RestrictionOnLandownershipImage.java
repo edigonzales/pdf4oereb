@@ -6,11 +6,13 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,12 +67,15 @@ public class RestrictionOnLandownershipImage implements ExtensionFunction {
     public XdmValue call(XdmValue[] arguments) throws SaxonApiException {
         // the restriction on landownership maps
         XdmValue restrictionOnLandownershipMaps = (XdmValue) arguments[0];
+//        log.info("restrictionOnLandownershipMaps" + restrictionOnLandownershipMaps);
 
         // the background image (which will be put _over_ the restriction images...)
         XdmNode backgroundMapNode = (XdmNode) arguments[1];
+//        log.info("backgroundMapNode" + backgroundMapNode);
         
         // the overlay image
         XdmNode overlayImageNode = (XdmNode) arguments[2];
+//        log.info("overlayImageNode" + overlayImageNode);
 
         // the list that stores the image, the layer index and the opacity value
         List<MapImage> mapImageList = new ArrayList<MapImage>();
@@ -109,7 +114,7 @@ public class RestrictionOnLandownershipImage implements ExtensionFunction {
                         InputStream imageInputStream = new ByteArrayInputStream(imageByteArray);
                         layerImage = ImageIO.read(imageInputStream);
                         
-//                      ImageIO.write(layerImage, "png", new File("/Users/stefan/tmp/layerImage.png"));                 
+                        ImageIO.write(layerImage, "png", new File("/Users/stefan/tmp/layerImage"+new Date().hashCode()+".png"));                 
                     } catch (Exception e) {
                         e.printStackTrace();
                         log.error(e.getMessage());

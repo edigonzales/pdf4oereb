@@ -357,9 +357,16 @@
 	                  </xsl:if>
 	                  <xsl:if test="data:SymbolRef and not(data:Symbol)">
 	                    <xsl:attribute name="src">
+                          <xsl:text>url('data:</xsl:text>
+                          <xsl:text>image/png;base64,</xsl:text>
+                          <xsl:value-of select="oereb:fixImage(data:SymbolRef)"/>
+                          <xsl:text>')</xsl:text>
+	                    
+	                    <!--
 	                      <xsl:text>url('</xsl:text>
-	                      <xsl:value-of select="oereb:decodeURL(data:SymbolRef)"/>
+	                      <xsl:value-of select="oereb:fixImage(data:SymbolRef)"/>
 	                      <xsl:text>')</xsl:text>
+     -->	                      
 	                    </xsl:attribute>
 	                  </xsl:if>
 	                </fo:external-graphic>
@@ -449,9 +456,10 @@
 	                  </xsl:if>
 	                  <xsl:if test="data:SymbolRef and not(data:Symbol)">
 	                    <xsl:attribute name="src">
-	                      <xsl:text>url('</xsl:text>
-	                      <xsl:value-of select="oereb:decodeURL(data:SymbolRef)"/>
-	                      <xsl:text>')</xsl:text>
+                          <xsl:text>url('data:</xsl:text>
+                          <xsl:text>image/png;base64,</xsl:text>
+                          <xsl:value-of select="oereb:fixImage(data:SymbolRef)"/>
+                          <xsl:text>')</xsl:text>
 	                    </xsl:attribute>
 	                  </xsl:if>
 	                </fo:external-graphic>
